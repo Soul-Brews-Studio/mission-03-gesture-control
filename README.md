@@ -318,6 +318,25 @@ fn connect_mqtt() -> Result<Client, MqttError> {
 | Lightning storm effect | +10 |
 | Match HTML visual quality | +5 |
 
+### Reference Implementation
+
+- **Rust Hand Tracker**: [laris-co/hand-tracker-mqtt](https://github.com/laris-co/hand-tracker-mqtt) - Camera → MQTT in Rust
+
+### Alternative: Bevy Engine
+
+For a more powerful 3D experience, consider [Bevy](https://bevyengine.org/):
+
+```toml
+[dependencies]
+bevy = "0.15"
+rumqttc = "0.24"
+```
+
+Bevy advantages over minifb:
+- Built-in 3D rendering (meshes, materials, lighting)
+- ECS architecture (cleaner code)
+- Hot reloading for faster iteration
+
 ---
 
 ## 🔮 Oracle Philosophy
