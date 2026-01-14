@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISSION-03: Gesture Globe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a14;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+        #info h1 { font-size: 18px; margin-bottom: 10px; }
+        #gesture {
+            font-size: 24px;
+            color: #4ade80;
+            margin-top: 10px;
+        }
+        #status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .connected { background: #22c55e; color: #fff; }
+        .disconnected { background: #ef4444; color: #fff; }
+
+        /* Filter Panel */
+        #filters {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+        #filters h3 { color: #fff; margin-bottom: 10px; font-size: 14px; }
+        .filter-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-btn.active { opacity: 1; }
+        .filter-btn.inactive { opacity: 0.3; }
+        .filter-green { background: #4ade80; color: #000; }
+        .filter-pink { background: #f472b6; color: #000; }
+        .filter-blue { background: #60a5fa; color: #000; }
+        .filter-yellow { background: #fbbf24; color: #000; }
+        .filter-purple { background: #a78bfa; color: #000; }
+
+        /* HUD Stats */
+        #hud {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: #888;
+            font-size: 12px;
+            z-index: 100;
+        }
+        #hud .stat { margin: 4px 0; }
+        #hud .value { color: #4ade80; font-weight: bold; }
+
+        /* Gesture Guide */
+        #guide {
+            position: absolute;
+            top: 120px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: #666;
+            font-size: 11px;
+            z-index: 100;
+        }
+        #guide div { margin: 3px 0; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>🌐 Gesture Globe</h1>
+        <div>Current gesture:</div>
+        <div id="gesture">Waiting...</div>
+    </div>
+    <div id="status" class="disconnected">Disconnected</div>
+
+    <div id="guide">
+        <div>🖐️ Close/Far → Zoom</div>
+        <div>← Hand Left → Spin Left</div>
+        <div>→ Hand Right → Spin Right</div>
+        <div>✋✋ Two Hands → STOP</div>
+        <div>👆 Point → Cycle Types</div>
+    </div>
+
+    <div id="filters">
+        <h3>Node Types</h3>
+        <button class="filter-btn filter-green active" data-type="data">Data</button>
+        <button class="filter-btn filter-pink active" data-type="event">Event</button>
+        <button class="filter-btn filter-blue active" data-type="action">Action</button>
+        <button class="filter-btn filter-yellow active" data-type="state">State</button>
+        <button class="filter-btn filter-purple active" data-type="link">Link</button>
+    </div>
+
+    <div id="hud">
+        <div class="stat">Nodes: <span class="value" id="nodeCount">0</span></div>
+        <div class="stat">Zoom: <span class="value" id="zoomLevel">100%</span></div>
+        <div class="stat">Rotation: <span class="value" id="rotSpeed">Normal</span></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

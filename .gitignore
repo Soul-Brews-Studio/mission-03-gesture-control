@@ -1,0 +1,13 @@
+# Model files (auto-downloaded)
+*.task
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# UV lock (regenerated)
+uv.lock
+
+# OS
+.DS_Store
