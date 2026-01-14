@@ -195,6 +195,131 @@ client.publish('voice/speak', JSON.stringify({
 
 ---
 
+## 🧠 Advanced Challenge: Deep Learning (Level 2)
+
+> *"The Oracle learns from patterns, not rules."*
+
+### Transfer Learning + KNN Classification
+
+Replace rule-based gesture detection with machine learning:
+
+| Step | Task |
+|------|------|
+| 1 | Load pre-trained hand landmark model (MediaPipe) |
+| 2 | Extract feature embeddings from the **last layer** |
+| 3 | Collect training samples for each gesture (50+ per class) |
+| 4 | Train **KNN classifier** on extracted features |
+| 5 | Replace `detect_gestures()` with KNN prediction |
+
+### Why This Approach?
+
+```
+Pre-trained Model → Feature Extractor → KNN on Last Layer
+     (frozen)         (21 landmarks)      (your gestures)
+```
+
+- **Transfer Learning**: Use MediaPipe's learned representations
+- **KNN**: Simple, no backpropagation needed, works with small datasets
+- **Last Layer Features**: Rich hand pose information already extracted
+
+### Hints
+
+```python
+# Pseudo-code structure
+from sklearn.neighbors import KNeighborsClassifier
+
+# 1. Collect features: flatten landmarks to 63-dim vector (21 × 3)
+features = np.array([[lm['x'], lm['y'], lm['z']] for lm in landmarks]).flatten()
+
+# 2. Train KNN on collected samples
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+
+# 3. Predict gesture
+gesture = knn.predict([features])[0]
+```
+
+### Bonus Points (Level 2)
+
+| Achievement | Points |
+|-------------|--------|
+| KNN classifier working | +15 |
+| Accuracy > 90% on 5 gestures | +10 |
+| Add custom gesture (your invention) | +10 |
+| Compare KNN vs rule-based accuracy | +5 |
+
+---
+
+## 🦀 Advanced Challenge: Rust Globe (Level 3)
+
+> *"Rewrite the Oracle in the language of systems."*
+
+### Port Gesture Globe to Rust
+
+Create a native Rust application that renders the same 3D globe as the HTML visualizer:
+
+| Step | Task |
+|------|------|
+| 1 | Remove all `.unwrap()` calls — use proper `Result` handling |
+| 2 | Create window canvas (use `minifb` or `pixels` crate) |
+| 3 | Implement `xxhash()` and `hash_on_sphere()` in Rust |
+| 4 | Render 65 nodes on sphere surface |
+| 5 | Subscribe to MQTT and control globe with gestures |
+| 6 | Add lightning effect (line drawing between nodes) |
+
+### Why Rust?
+
+- **No `.unwrap()` spam**: Forces you to handle errors properly
+- **Performance**: Native rendering, no browser overhead
+- **Learning**: Systems programming with safety guarantees
+
+### Crates to Explore
+
+```toml
+[dependencies]
+minifb = "0.25"          # Window + framebuffer
+rumqttc = "0.24"         # MQTT client
+glam = "0.25"            # 3D math (Vec3, etc.)
+rand = "0.8"             # For xxhash seed
+```
+
+### Hints
+
+```rust
+// KlakMath in Rust
+fn xxhash(seed: u32, data: u32) -> f32 {
+    let mut h = seed.wrapping_add(374761393);
+    h = h.wrapping_add(data.wrapping_mul(3266489917));
+    h = (h << 17 | h >> 15).wrapping_mul(668265263);
+    h ^= h >> 15;
+    h = h.wrapping_mul(2246822519);
+    h ^= h >> 13;
+    h = h.wrapping_mul(3266489917);
+    h ^= h >> 16;
+    h as f32 / 4294967296.0
+}
+
+// Error handling pattern
+fn connect_mqtt() -> Result<Client, MqttError> {
+    // No unwrap! Use ? operator
+    let options = MqttOptions::new("globe", "localhost", 1883)?;
+    let (client, connection) = Client::new(options, 10)?;
+    Ok(client)
+}
+```
+
+### Bonus Points (Level 3)
+
+| Achievement | Points |
+|-------------|--------|
+| Zero `.unwrap()` in codebase | +10 |
+| Globe renders with 65 nodes | +15 |
+| Gesture control working | +10 |
+| Lightning storm effect | +10 |
+| Match HTML visual quality | +5 |
+
+---
+
 ## 🔮 Oracle Philosophy
 
 | Principle | Meaning |
